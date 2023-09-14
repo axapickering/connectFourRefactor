@@ -35,14 +35,14 @@ class Game {
 
   makeHtmlBoard() {
     const htmlBoard = document.getElementById('board');
-    htmlBoard.innerHTML = ''; //TODO: Ask during CR
+    htmlBoard.innerHTML = '';
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
 
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement('td');
-      headCell.setAttribute('id', `top-${x}`);
+      headCell.setAttribute('id', `${x}`);
       let boundHandleClick = this.handleClick.bind(this);
       headCell.addEventListener('click', boundHandleClick);
       top.append(headCell);
@@ -105,12 +105,13 @@ class Game {
 
     // place piece in board and add to HTML table
     this.board[y][x] = this.currPlayer;
+    debugger;
     this.placeInTable(y, x);
 
     // check for win
     if (this.checkForWin()) {
-       return this.endGame(`Player ${this.currPlayer} won!`);
-     }
+      return this.endGame(`Player ${this.currPlayer} won!`);
+    }
 
     // check for tie: if top row is filled, board is filled
     if (this.board[0].every(cell => cell !== null)) {
