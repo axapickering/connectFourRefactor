@@ -12,25 +12,30 @@ class Game {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-    this.board = []; // array of rows, each row is array of cells  (board[y][x])
     this.currPlayer = 1;
+    this.makeBoard();
+    this.makeHtmlBoard();
+
   }
 
   /** makeBoard: create in-JS board structure:
- *    board = array of rows, eachs row is array of cells  (board[y][x])
- */
+   *    board = array of rows, eachs row is array of cells  (board[y][x])
+  */
   makeBoard() {
+    this.board = [];
+    // array of rows, each row is array of cells  (board[y][x])
     for (let y = 0; y < this.height; y++) {
       const emptyRow = Array.from({ length: this.width }).fill(null);
       this.board.push(emptyRow);
     }
   }
 
+
   /** makeHtmlboard: make HTML table and row of column tops. */
 
   makeHtmlBoard() {
     const htmlBoard = document.getElementById('board');
-
+    htmlBoard.innerHTML = ''; //TODO: Ask during CR
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
@@ -89,7 +94,7 @@ class Game {
 
   handleClick(evt) {
     // get x from ID of clicked cell
-    const x = Number(evt.target.id.slice("top-".length));
+    const x = +evt.target.id;
 
     // get next spot in column (if none, ignore click)
     const y = this.findSpotForCol(x);
@@ -154,3 +159,4 @@ class Game {
 // TODO: change and add params
 const game = new Game().startGame();
 */
+new Game(6, 7);
