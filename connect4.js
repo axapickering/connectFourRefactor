@@ -14,11 +14,10 @@ class Game {
     this.height = height;
     this.board = []; // array of rows, each row is array of cells  (board[y][x])
     this.currPlayer = 1;
-    makeBoard(this.board);
   }
 
   /** makeBoard: create in-JS board structure:
- *    board = array of rows, each row is array of cells  (board[y][x])
+ *    board = array of rows, eachs row is array of cells  (board[y][x])
  */
   makeBoard() {
     for (let y = 0; y < this.height; y++) {
@@ -39,7 +38,7 @@ class Game {
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement('td');
       headCell.setAttribute('id', `top-${x}`);
-      headCell.addEventListener('click', handleClick);
+      headCell.addEventListener('click', this.handleClick);
       top.append(headCell);
     }
 
@@ -57,6 +56,7 @@ class Game {
 
       htmlBoard.append(row);
     }
+  }
 
     /** placeInTable: update DOM to place piece into HTML table of board */
 
@@ -89,16 +89,16 @@ class Game {
 
       // place piece in board and add to HTML table
       this.board[y][x] = this.currPlayer;
-      placeInTable(y, x);
+      this.placeInTable(y, x);
 
       // check for win
-      if (checkForWin()) {
-        return endGame(`Player ${this.currPlayer} won!`);
+      if (this.checkForWin()) {
+        return this.endGame(`Player ${this.currPlayer} won!`);
       }
 
       // check for tie: if top row is filled, board is filled
       if (this.board[0].every(cell => cell !== null)) {
-        return endGame('Tie!');
+        return this.endGame('Tie!');
       }
 
       // switch players
@@ -119,7 +119,7 @@ class Game {
             y < this.height &&
             x >= 0 &&
             x < this.width &&
-            board[y][x] === currPlayer
+            this.board[y][x] === this.currPlayer
         );
       }
 
@@ -140,7 +140,7 @@ class Game {
       }
     }
   }
-}
-
-const game = new Game();
-
+  /**
+// TODO: change and add params
+const game = new Game().startGame();
+*/
