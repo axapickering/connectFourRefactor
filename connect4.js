@@ -7,13 +7,23 @@
  * board fills (tie)
  */
 
+class Player {
+  constructor(colorName,playerName) {
+    this.colorName = colorName;
+    this.playerName = playerName;
+  }
+}
+
+
 
 class Game {
   //TODO: make defaults values for width and height
-  constructor(width, height) {
+  constructor(width, height,player1,player2) {
+    this.player1 = player1;
+    this.player2 = player2;
     this.width = width;
     this.height = height;
-    this.currPlayer = 1;
+    this.currPlayer = player1;
     this.makeBoard();
     this.makeHtmlBoard();
 
@@ -80,8 +90,8 @@ class Game {
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
-    piece.classList.add(`p${this.currPlayer}`);
-
+    piece.classList.add(`p${this.currPlayer.playerName}`);
+    piece.style.backgroundColor = this.currPlayer.colorName;
     const spot = document.getElementById(`c-${y}-${x}`);
     spot.append(piece);
   }
@@ -105,13 +115,13 @@ class Game {
     }
 
     // place piece in board and add to HTML table
-    this.board[y][x] = this.currPlayer;
+    this.board[y][x] = this.currPlayer.playerName;
     debugger;
     this.placeInTable(y, x);
 
     // check for win
     if (this.checkForWin()) {
-      return this.endGame(`Player ${this.currPlayer} won!`);
+      return this.endGame(`Player ${this.currPlayer.playerName} won!`);
     }
 
     // check for tie: if top row is filled, board is filled
@@ -120,7 +130,7 @@ class Game {
     }
 
     // switch players
-    this.currPlayer = this.currPlayer === 1 ? 2 : 1;
+    this.currPlayer = this.currPlayer.playerName === this.player1.playerName ? this.player2 : this.player1;
   }
 
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -136,7 +146,7 @@ class Game {
           y < this.height &&
           x >= 0 &&
           x < this.width &&
-          this.board[y][x] === this.currPlayer
+          this.board[y][x] === this.currPlayer.playerName
       );
     };
 
@@ -159,8 +169,16 @@ class Game {
 
 }
 
-const startButton = document.getElementById('start-game');
-startButton.addEventListener('click', startGame);
+const gameStartForm = document.getElementById("game-start-form");
+
+gameStartForm.addEventListener('submit', evt => {
+  evt.preventDefault();
+  startGame();
+});
+
+let color1 = document.getElementById("player1color");
+let color2 = document.getElementById("player2color");
+
 function startGame() {
-  new Game(6, 7);
+  new Game(6, 7,new Player(color1,"Player-1"),new Player(color2,"Player-2"));
 }
